@@ -11,7 +11,7 @@ function App() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (Logic.player(arr) === "O") {
+      if (Logic.player(arr) === "O" && !Logic.terminal(arr)) {
         setArr(Logic.result(arr, Logic.bestMove(arr)));
       }
     }, 100);

@@ -85,25 +85,29 @@ export const islegal = (state, i) => {
   return state[i] == "";
 };
 export const minimax = (state, depth, isMaximizing) => {
-  const score = utility(state);
-  if (score === 1) return score - depth;
-  if (score === -1) return score + depth;
-  if (actions(state).length === 0) return 0;
+  if (terminal) {
+    const score = utility(state);
+    if (score === 1) return score - depth;
+    if (score === -1) return score + depth;
+    if (actions(state).length === 0) return 0;
+  }
 
   if (isMaximizing) {
     let best = -Infinity;
     actions(state).forEach((index) => {
-      state[index] = "X";
-      best = Math.max(best, minimax(state, depth + 1, false));
-      state[index] = "";
+      let clonestate = [...state];
+      clonestate[index] = "X";
+      best = Math.max(best, minimax(clonestate, depth + 1, false));
+      clonestate[index] = "";
     });
     return best;
   } else {
     let best = Infinity;
     actions(state).forEach((index) => {
-      state[index] = "O";
-      best = Math.min(best, minimax(state, depth + 1, true));
-      state[index] = "";
+      let clonestate = [...state];
+      clonestate[index] = "O";
+      best = Math.min(best, minimax(clonestate, depth + 1, true));
+      clonestate[index] = "";
     });
     return best;
   }
@@ -111,10 +115,14 @@ export const minimax = (state, depth, isMaximizing) => {
 export const bestMove = (state) => {
   let bestVal = -Infinity;
   let move = -1;
+  if (actions(state).length === 8) {
+    return 4;
+  }
   actions(state).forEach((index) => {
-    state[index] = "X";
-    const moveVal = minimax(state, 0, false);
-    state[index] = "";
+    let clonestate = [...state];
+    clonestate[index] = "X";
+    const moveVal = minimax(clonestate, 0, false);
+    clonestate[index] = "";
     if (moveVal > bestVal) {
       move = index;
       bestVal = moveVal;
@@ -123,3 +131,4 @@ export const bestMove = (state) => {
   return move;
 };
 export const initialState = ["", "", "", "", "", "", "", "", ""];
+bestMove(initialState);
