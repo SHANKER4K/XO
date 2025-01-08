@@ -115,7 +115,7 @@ export const minimax = (state, depth, isMaximizing) => {
 export const bestMove = (state) => {
   let bestVal = -Infinity;
   let move = -1;
-  if (actions(state).length === 8) {
+  if (actions(state).length === 8 && state[4] === "") {
     return 4;
   }
   actions(state).forEach((index) => {
